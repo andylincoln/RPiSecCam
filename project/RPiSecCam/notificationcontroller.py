@@ -45,18 +45,23 @@ class EmailClient:
 class GSMModem:
 
     # Modem Commands and other necessary strings
-    AT='AT'
-    OK='OK'
-    CTRLZ=ascii.ctrl('z')
-    CR='\r'
-    PLUS='+'
-    NEWLINE='\n'
-    CMGF='+CMGF=1'
-    CMGS='+CMGS='
-    QUOTES='\"'
-    COPS='+COPS?'
-    CSQ='+CSQ'
-    CBC='+CBC'
+    AT      = 'AT'
+    CBC     = '+CBC'
+    CMGD    = '+CMGD='
+    CMGF    = '+CMGF='
+    CMGL    = '+CMGL='
+    CMGR    = '+CMGR='
+    CMGS    = '+CMGS='
+    COPS    = '+COPS?'
+    CPAS    = '+CPAS'
+    CPMS    = '+CPMS='
+    CR      = '\r'
+    CSQ     = '+CSQ'
+    CTRLZ   = ascii.ctrl('z')
+    NEWLINE = '\n'
+    OK      = 'OK'
+    PLUS    = '+'
+    QUOTES  = '\"'
 
     def __init__(self):
         self.serialPort="/dev/ttyUSB0"
@@ -90,13 +95,22 @@ class GSMModem:
         response = self.getCSQ()
         return response[6:]
 
+    def setCPMS(self, storageToRead):
+        self.sendCommand(GSMModem.AT+GSMModem.CMGF+GSMModem.NEWLINE)
+        response = self.sendCommand(GSMModem.AT+GSMMode.CPMS+storageToRead+GSMModem.NEWLINE)
+        return response[3].translate(None,"".join('\n'))
+
+    # TODO
+    def getSMS(self, messageIndex):
+        pass
+
     # Send a message over a serial connection to specified telphone number
     def sendSMS(self, telephoneNumber, message):
 
             if (self.isTelephoneNumber(telephoneNumber) != True):
                 raise ValueError("Bad phone number!")
             serialConnection = serial.Serial(self.serialPort, baudrate=9600, timeout=5)
-            serialConnection.write(GSMModem.AT+GSMModem.CMGF+GSMModem.NEWLINE)
+            serialConnection.write(GSMModem.AT+GSMModem.CMGF+'1'+GSMModem.NEWLINE)
             # AT+CMGS="+19783190545"\n
             serialConnection.write(GSMModem.AT+GSMModem.CMGS+GSMModem.QUOTES+telephoneNumber+GSMModem.QUOTES+GSMModem.NEWLINE)
             # write the message
