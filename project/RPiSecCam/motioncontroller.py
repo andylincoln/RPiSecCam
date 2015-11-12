@@ -20,8 +20,12 @@ class MotionController:
     def __del__(self):
         self.camera.close()
 
-    def detector(self):
-        return GPIO.input(self.motion_pin)
+    # Returns True if Motion Pin is high
+    def motionDetected(self):
+        if (GPIO.input(self.motion_pin) == 1):
+            return True
+        else:
+            return False
 
     def capturePhoto(self):
         self.camera.capture( '../photos/' + str(datetime.now()) + '.jpg')

@@ -33,3 +33,10 @@ class LightController:
 
     def off(self,light):
         GPIO.output(light, False)
+
+    def normal(self):
+        self.off(self.RED_LIGHT)
+        self.on(self.GREEN_LIGHT)
+    def error(self):
+        self.off(self.GREEN_LIGHT)
+        self.on(self.RED_LIGHT)
