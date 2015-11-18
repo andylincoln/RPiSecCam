@@ -3,65 +3,64 @@
 #
 
 import time
-import threading
 import notificationcontroller
 import lightcontroller
 import motioncontroller
 import logging
-import signal
+import RPi.GPIO as GPIO
 
 logging.basicConfig(filename='../log/RasPiSecCam.log',
                     filemode='w',
                     level=logging.DEBUG, datefmt='%m-%d %h:%M')
 logging.info("RPiSecCam by Andy Lincoln")
 
-class Thread(threading.Thread):
-    def __init__(self, t, *args):
-        threading.Thread.__init__(self, target=t, args=args)
-        self.setDaemon(True)
-        self.start()
-
-def bootNotifCtrl():
-    notificationController = notificationcontroller.NotificationController()
-    logging.debug('Notification Controller booted successfully')
-
-def bootLightCtrl():
-    lightController = lightcontroller.LightController()
-    time.sleep(2)
-    logging.debug('Light Controller booted successfully')
-
-    # If everythings working fine, show green light, otherwise red
-    error = False
-
-def bootMotionCtrl():
-    motionController = motioncontroller.MotionController()
-    logging.debug('Motion Controller booted successfully')
-    #TODO If motion is detected, take picture
 
 
 """Entry point for the application script"""
-def main():
+ARMED = False
+MSG_ARM     = {'msg' : "ARM"}
+MSG_DISARM  = {'msg' : "DISARM"}
+MSG_ERROR   = {'msg' : "ERROR"}
+MSG_NORMAL  = {'msg' : "NORMAL"}
+MSG_IS_MOTION_DETECTED = { 'msg' : "IS MOTION DETECTED?"}
 
-    threads=[]
+logging.debug("Booting controllers")
+notif_ref = notificationcontroller.NotificationController.start()
+light_ref = lightcontroller.LightController().start()
+motion_ref = motioncontroller.MotionController().start()
 
-    lightThread = Thread(bootLightCtrl)
-    motionThread = Thread(bootMotionCtrl)
-    notifThread = Thread(bootNotifCtrl)
+ACTOR_REFS=[light_ref, motion_ref, notif_ref]
 
-    threads.append(lightThread)
-    threads.append(motionThread)
-    threads.append(notifThread)
+notif_proxy = notif_ref.proxy()
+light_proxy   = light_ref.proxy()
+motion_proxy = motion_ref.proxy()
 
-    logging.debug("Booting controllers")
+PROXIES=[notif_proxy, light_proxy, motion_proxy]
 
-    while(True):
-        try:
+# Start the program with everything normal
+light_ref.tell(MSG_NORMAL)
 
+while(True):
+    try:
+
+        #Check for text message saying ARM if so, set ARMED to True
+
+
+        # If system is armed, check for motion, if motion detected, take picture
+        logging.debug("Checking if armed")
+        if (ARMED):
+            logging.debug("Checking if motion detected")
+            motionDetected = motion_ref.ask(MSG_IS_MOTION_DETECTED, block=True, timeout=2).get(timeout=3)
+            if (motionDetected):
+                logging.debug("Motion detected, taking photo!")
+                photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True, timeout=2).get(timeout=5)
+                logging.debug("Photo taken! Filename is {filename}".format(filename=photoFilename))
+        else:
+            logging.debug("Found nothing, going to sleep")
             time.sleep(1)
 
-        except KeyboardInterrupt:
-            for thread in threads:
-                thread.join()
-            quit()
-main()
-
+    except KeyboardInterrupt:
+        for actor in ACTOR_REFS:
+            actor.stop()
+        GPIO.cleanup()
+        quit()
