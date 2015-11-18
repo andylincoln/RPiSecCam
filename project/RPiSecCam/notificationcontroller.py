@@ -9,6 +9,7 @@ import yaml
 import socket
 import time
 import serial
+import pykka
 from types import *
 from curses import ascii
 
@@ -153,9 +154,13 @@ class GSMModem:
         serialConnection.close()
         return self.sanitize(ack[1])
 
-class NotificationController:
+class NotificationController(pykka.ThreadingActor):
+
     emailClient = EmailClient()
     gsm = GSMModem()
+
+    def __init__(self):
+        super(NotificationController, self).__init__()
 
     def notify(message, attachment=None, phone=False, email=True):
 
