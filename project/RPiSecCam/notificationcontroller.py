@@ -10,6 +10,7 @@ import socket
 import time
 import serial
 import pykka
+from operator import itemgetter
 from types import *
 from curses import ascii
 
@@ -47,6 +48,7 @@ class GSMModem:
 
     # Modem Commands and other necessary strings
     AT      = 'AT'
+    ALL     = 'ALL'
     CBC     = '+CBC'
     CMGD    = '+CMGD='
     CMGF    = '+CMGF='
@@ -82,6 +84,12 @@ class GSMModem:
         response = self.getCBC()
         return response[11:]
 
+    def getLastMessage(self):
+        response = self.getCMGL()
+
+    def getCMGL(self):
+        return self.sendCommand(GSMModem.AT+GSMModem.CMGL+GSMModem.NEWLINE)
+
     def getCOPS(self):
         return sendCommand(GSMModem.AT+GSMModem.COPS+GSMModem.NEWLINE)
 
@@ -103,7 +111,18 @@ class GSMModem:
 
     # TODO
     def getSMS(self, messageIndex):
-        pass
+        messagePosition = [3, 4]
+        self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
+        response = str(itemgetter(*messagePosition)(self.sendCommand(GSMModem.AT + GSMModem.CMGR + str(messageIndex) + GSMModem.NEWLINE)))
+        return response
+
+    def getAllMessagesByStatus(self, messageStatus):
+        self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
+        response = self.sendCommand(GSMModem.AT + GSMModem.CMGL + messageStatus + GSMModem.NEWLINE)
+        first_ok_index = ''.join(response).find('OK')
+        last_ok_index = ''.join(response).find('OK', first_ok_index + 1)
+        return ''.join(response)[first_ok_index+6:last_ok_index-1]
+
 
     # Send a message over a serial connection to specified telphone number
     def sendSMS(self, telephoneNumber, message):
