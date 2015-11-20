@@ -11,6 +11,7 @@ import time
 import serial
 import pykka
 import logging
+import re
 from operator import itemgetter
 from types import *
 from curses import ascii
@@ -90,7 +91,8 @@ class GSMModem:
         return response[11:]
 
     def getLastMessage(self):
-        response = self.getCMGL()
+        count = self.getAllMessageCount()
+        return self.getSMS(count)
 
     def getCMGL(self):
         return self.sendCommand(GSMModem.AT+GSMModem.CMGL+GSMModem.NEWLINE)
@@ -114,19 +116,16 @@ class GSMModem:
         response = self.sendCommand(GSMModem.AT+GSMModem.CPMS+GSMModem.QUOTES+storageToRead+GSMModem.QUOTES+GSMModem.NEWLINE)
         #return (response[3]).translate(None,"".join('\n'))
         return response
-    # TODO
+
+
+    # Pass the index of the message, a Message object is returned
     def getSMS(self, messageIndex):
+        serialConnection = serial.Serial(self.serialPort, baudrate=9600, timeout=8)
+        serialConnection.write(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
+        serialConnection.write(GSMModem.AT + GSMModem.CMGR + str(messageIndex) + GSMModem.NEWLINE)
         messagePosition = [3, 4]
-        self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
-        response = self.sendCommand(GSMModem.AT + GSMModem.CMGR + str(messageIndex) + GSMModem.NEWLINE)
-        return response
-
-    def getAllMessagesByStatusOld(self, messageStatus):
-        self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
-        response = self.sendCommand(GSMModem.AT + GSMModem.CMGL + GSMModem.QUOTES + messageStatus + GSMModem.QUOTES + GSMModem.NEWLINE)
-
-
-
+        response = itemgetter(*messagePosition)(serialConnection.readlines())
+        serialConnection.close()
         return response
 
     def getAllMessagesByStatus(self, messageStatus):
@@ -134,13 +133,19 @@ class GSMModem:
         serialConnection.write(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
         serialConnection.write(GSMModem.AT + GSMModem.CMGL+ GSMModem.QUOTES + messageStatus + GSMModem.QUOTES + GSMModem.NEWLINE)
 
-        response = "".join(serialConnection.readlines())
+        response = serialConnection.readlines()
         serialConnection.close()
 
         first_ok_index = ''.join(response).find('OK')
         last_ok_index = ''.join(response).find('OK', first_ok_index + 1)
 
         return ''.join(response)[first_ok_index+6:last_ok_index-1]
+
+    def getAllMessageCount(self):
+        cpmsResponse = self.setCPMS(GSMModem.MT)
+        digitSearch = re.search("\d", cpmsResponse)
+        messageCount = cpmsResponse[digitSearch.start():digitSearch.start()+1]
+        return int(messageCount)
 
     # Send a message over a serial connection to specified telphone number
     def sendSMS(self, telephoneNumber, message):
@@ -184,15 +189,45 @@ class GSMModem:
         str = str.translate(None,''.join(chars_to_remove))
         return str
 
+    # Identify message details from the response string of reading a single message
+    def reformatSingleMessage(self, messageString):
+        quotationIndex = messageString.find('"')
+        nextQuotationIndex = messageString.find('"', quotationIndex+1)
+        messageStatus = 'Status: '+messageString[quotationIndex+1:nextQuotationIndex]
+
+        quotationIndex = messageString.find('"', nextQuotationIndex+1)
+        nextQuotationIndex = messageString.find('"', quotationIndex+1)
+        messageSenderNumber = '\nSender: '+messageString[quotationIndex+1:nextQuotationIndex]
+
+        quotationIndex = messageString.find('"', nextQuotationIndex+4)
+        nextQuotationIndex = messageString.find('"', quotationIndex+1)
+        messageTimeStamp = '\nReceived on:' + messageString[quotationIndex+1:nextQuotationIndex]
+
+        quotationIndex = messageString.find('\'', nextQuotationIndex+6)
+        nextQuotationIndex = messageString.find('\'', quotationIndex+1)
+        messageValue = '\nMessage:' + messageString[quotationIndex+1:nextQuotationIndex-4]
+
+        return messageStatus+messageSenderNumber+messageTimeStamp+messageValue
+
     def sendCommand(self, str_input):
         serialConnection = serial.Serial(self.serialPort, baudrate=9600, timeout=8)
         serialConnection.write(str_input)
         ack = serialConnection.readlines()
         serialConnection.close()
-#Lop off the echo
+
+        #Lop off the echo
         ack.pop(0)
-# Clean out unneeded chars
+
+        # Clean out unneeded chars
         return self.sanitize(ack[0])
+
+class Message:
+
+    def __init__(self, tup):
+        self.status      = tup[0]
+        self.phoneNumber = tup[1]
+        self.timestamp   = tup[3]
+        self.content     = tup[4]
 
 class NotificationController(pykka.ThreadingActor):
 
