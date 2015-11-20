@@ -1,0 +1,17 @@
+INFO:root:RPiSecCam by Andy Lincoln
+DEBUG:root:Booting controllers
+DEBUG:pykka:Registered NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
+DEBUG:pykka:Starting NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
+DEBUG:pykka:Registered LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
+DEBUG:pykka:Starting LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
+DEBUG:pykka:Registered MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
+DEBUG:pykka:Starting MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
+DEBUG:root:Checking if armed
+DEBUG:root:Armed, waiting for motion
+DEBUG:root:Found nothing, going to sleep
+DEBUG:pykka:Unregistered LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
+DEBUG:pykka:Stopped LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
+DEBUG:pykka:Unregistered MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
+DEBUG:pykka:Stopped MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
+DEBUG:pykka:Unregistered NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
+DEBUG:pykka:Stopped NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)

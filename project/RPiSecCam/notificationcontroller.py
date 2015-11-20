@@ -10,9 +10,11 @@ import socket
 import time
 import serial
 import pykka
+import logging
 from operator import itemgetter
 from types import *
 from curses import ascii
+
 
 # EmailClient class for sending emails over SMTP using the details given in config.yaml
 class EmailClient:
@@ -62,9 +64,12 @@ class GSMModem:
     CSQ     = '+CSQ'
     CTRLZ   = ascii.ctrl('z')
     NEWLINE = '\n'
+    ME      = 'ME'
+    MT      = 'MT'
     OK      = 'OK'
     PLUS    = '+'
     QUOTES  = '\"'
+    SM      = 'SM'
 
     def __init__(self):
         self.serialPort="/dev/ttyUSB0"
@@ -106,23 +111,36 @@ class GSMModem:
 
     def setCPMS(self, storageToRead):
         self.sendCommand(GSMModem.AT+GSMModem.CMGF+GSMModem.NEWLINE)
-        response = self.sendCommand(GSMModem.AT+GSMMode.CPMS+storageToRead+GSMModem.NEWLINE)
-        return response[3].translate(None,"".join('\n'))
-
+        response = self.sendCommand(GSMModem.AT+GSMModem.CPMS+GSMModem.QUOTES+storageToRead+GSMModem.QUOTES+GSMModem.NEWLINE)
+        #return (response[3]).translate(None,"".join('\n'))
+        return response
     # TODO
     def getSMS(self, messageIndex):
         messagePosition = [3, 4]
         self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
-        response = str(itemgetter(*messagePosition)(self.sendCommand(GSMModem.AT + GSMModem.CMGR + str(messageIndex) + GSMModem.NEWLINE)))
+        response = self.sendCommand(GSMModem.AT + GSMModem.CMGR + str(messageIndex) + GSMModem.NEWLINE)
+        return response
+
+    def getAllMessagesByStatusOld(self, messageStatus):
+        self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
+        response = self.sendCommand(GSMModem.AT + GSMModem.CMGL + GSMModem.QUOTES + messageStatus + GSMModem.QUOTES + GSMModem.NEWLINE)
+
+
+
         return response
 
     def getAllMessagesByStatus(self, messageStatus):
-        self.sendCommand(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
-        response = self.sendCommand(GSMModem.AT + GSMModem.CMGL + messageStatus + GSMModem.NEWLINE)
+        serialConnection = serial.Serial(self.serialPort, baudrate=9600, timeout=8)
+        serialConnection.write(GSMModem.AT + GSMModem.CMGF + GSMModem.NEWLINE)
+        serialConnection.write(GSMModem.AT + GSMModem.CMGL+ GSMModem.QUOTES + messageStatus + GSMModem.QUOTES + GSMModem.NEWLINE)
+
+        response = "".join(serialConnection.readlines())
+        serialConnection.close()
+
         first_ok_index = ''.join(response).find('OK')
         last_ok_index = ''.join(response).find('OK', first_ok_index + 1)
-        return ''.join(response)[first_ok_index+6:last_ok_index-1]
 
+        return ''.join(response)[first_ok_index+6:last_ok_index-1]
 
     # Send a message over a serial connection to specified telphone number
     def sendSMS(self, telephoneNumber, message):
@@ -171,7 +189,10 @@ class GSMModem:
         serialConnection.write(str_input)
         ack = serialConnection.readlines()
         serialConnection.close()
-        return self.sanitize(ack[1])
+#Lop off the echo
+        ack.pop(0)
+# Clean out unneeded chars
+        return self.sanitize(ack[0])
 
 class NotificationController(pykka.ThreadingActor):
 
