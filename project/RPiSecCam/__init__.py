@@ -23,6 +23,7 @@ MSG_DISARM  = {'msg' : "DISARM"}
 MSG_ERROR   = {'msg' : "ERROR"}
 MSG_NORMAL  = {'msg' : "NORMAL"}
 MSG_IS_MOTION_DETECTED = { 'msg' : "IS MOTION DETECTED?"}
+MSG_CAPTURE_PHOTO = { 'msg' : "CAPTURE PHOTO"}
 
 logging.debug("Booting controllers")
 notif_ref = notificationcontroller.NotificationController.start()
@@ -57,7 +58,7 @@ while(True):
             motionDetected = motion_ref.ask(MSG_IS_MOTION_DETECTED, block=True)
             if (motionDetected):
                 logging.debug("Motion detected, taking photo!")
-                photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True).get()
+                photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True)
                 logging.debug("Photo taken! Filename is {filename}".format(filename=photoFilename))
             else:
                 logging.debug("Found nothing, going to sleep")

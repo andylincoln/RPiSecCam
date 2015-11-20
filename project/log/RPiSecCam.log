@@ -1,17 +1,32 @@
 INFO:root:RPiSecCam by Andy Lincoln
 DEBUG:root:Booting controllers
-DEBUG:pykka:Registered NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
-DEBUG:pykka:Starting NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
-DEBUG:pykka:Registered LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
-DEBUG:pykka:Starting LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
-DEBUG:pykka:Registered MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
-DEBUG:pykka:Starting MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
+DEBUG:pykka:Registered NotificationController (urn:uuid:96e36dac-276d-4c48-adbd-31bcf3740a63)
+DEBUG:pykka:Starting NotificationController (urn:uuid:96e36dac-276d-4c48-adbd-31bcf3740a63)
+DEBUG:pykka:Registered LightController (urn:uuid:ae19cc62-01b3-4e3f-a666-da72aa93bf54)
+DEBUG:pykka:Starting LightController (urn:uuid:ae19cc62-01b3-4e3f-a666-da72aa93bf54)
+DEBUG:pykka:Registered MotionController (urn:uuid:cde50ab1-efbc-4869-b15e-4f223db4308b)
+DEBUG:pykka:Starting MotionController (urn:uuid:cde50ab1-efbc-4869-b15e-4f223db4308b)
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Found nothing, going to sleep
-DEBUG:pykka:Unregistered LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
-DEBUG:pykka:Stopped LightController (urn:uuid:ae893867-b855-4413-8954-47f34e3417cf)
-DEBUG:pykka:Unregistered MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
-DEBUG:pykka:Stopped MotionController (urn:uuid:1f1b44b7-5af6-416e-8d89-96a2015a3c16)
-DEBUG:pykka:Unregistered NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
-DEBUG:pykka:Stopped NotificationController (urn:uuid:d2165624-415f-4e68-9bc7-b134a5d099a0)
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-20 13:33:06.080446.jpg
+DEBUG:root:Checking if armed
+DEBUG:root:Armed, waiting for motion
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-20 13:33:06.944066.jpg
+DEBUG:root:Checking if armed
+DEBUG:root:Armed, waiting for motion
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-20 13:33:07.572837.jpg
+DEBUG:root:Checking if armed
+DEBUG:root:Armed, waiting for motion
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-20 13:33:08.224466.jpg
+DEBUG:root:Checking if armed
+DEBUG:root:Not Armed
+DEBUG:pykka:Unregistered LightController (urn:uuid:ae19cc62-01b3-4e3f-a666-da72aa93bf54)
+DEBUG:pykka:Stopped LightController (urn:uuid:ae19cc62-01b3-4e3f-a666-da72aa93bf54)
+DEBUG:pykka:Unregistered MotionController (urn:uuid:cde50ab1-efbc-4869-b15e-4f223db4308b)
+DEBUG:pykka:Stopped MotionController (urn:uuid:cde50ab1-efbc-4869-b15e-4f223db4308b)
+DEBUG:pykka:Unregistered NotificationController (urn:uuid:96e36dac-276d-4c48-adbd-31bcf3740a63)
+DEBUG:pykka:Stopped NotificationController (urn:uuid:96e36dac-276d-4c48-adbd-31bcf3740a63)

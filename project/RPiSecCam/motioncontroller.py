@@ -31,7 +31,7 @@ class MotionController(pykka.ThreadingActor):
     def on_receive(self, message):
         if (message == { 'msg' : "IS MOTION DETECTED?"}):
             return self.motionDetected()
-        elif (message == { 'msg' : "CAPTURE IMAGE" }):
+        elif (message == { 'msg' : "CAPTURE PHOTO" }):
             return self.capturePhoto()
 
     def closeCamera(self):
@@ -40,11 +40,9 @@ class MotionController(pykka.ThreadingActor):
 
     # Returns True if Motion Pin is high
     def motionDetected(self):
-        if (GPIO.input(self.motion_pin) == 1):
-            return True
-        else:
-            return False
+        return GPIO.input(self.motion_pin)
 
     def capturePhoto(self):
         filename =  '../photos/' + str(datetime.now()) + '.jpg'
         self.camera.capture(filename)
+        return filename
