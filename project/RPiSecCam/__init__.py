@@ -9,7 +9,7 @@ import motioncontroller
 import logging
 import RPi.GPIO as GPIO
 
-logging.basicConfig(filename='../log/RasPiSecCam.log',
+logging.basicConfig(filename='../log/RPiSecCam.log',
                     filemode='w',
                     level=logging.DEBUG, datefmt='%m-%d %h:%M')
 logging.info("RPiSecCam by Andy Lincoln")
@@ -39,25 +39,32 @@ PROXIES=[notif_proxy, light_proxy, motion_proxy]
 
 # Start the program with everything normal
 light_ref.tell(MSG_NORMAL)
-
+counter = 0
 while(True):
     try:
-
+        counter = counter + 1
+        if counter < 5 :
+            ARMED = True
+        else:
+            ARMED = False
         #Check for text message saying ARM if so, set ARMED to True
 
 
         # If system is armed, check for motion, if motion detected, take picture
         logging.debug("Checking if armed")
         if (ARMED):
-            logging.debug("Checking if motion detected")
-            motionDetected = motion_ref.ask(MSG_IS_MOTION_DETECTED, block=True, timeout=2).get(timeout=3)
+            logging.debug("Armed, waiting for motion")
+            motionDetected = motion_ref.ask(MSG_IS_MOTION_DETECTED, block=True)
             if (motionDetected):
                 logging.debug("Motion detected, taking photo!")
-                photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True, timeout=2).get(timeout=5)
+                photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True).get()
                 logging.debug("Photo taken! Filename is {filename}".format(filename=photoFilename))
+            else:
+                logging.debug("Found nothing, going to sleep")
+                time.sleep(30)
         else:
-            logging.debug("Found nothing, going to sleep")
-            time.sleep(1)
+            logging.debug("Not Armed")
+            time.sleep(30)
 
     except KeyboardInterrupt:
         for actor in ACTOR_REFS:

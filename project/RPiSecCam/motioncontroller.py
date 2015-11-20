@@ -30,9 +30,9 @@ class MotionController(pykka.ThreadingActor):
 
     def on_receive(self, message):
         if (message == { 'msg' : "IS MOTION DETECTED?"}):
-            return motionDetected()
+            return self.motionDetected()
         elif (message == { 'msg' : "CAPTURE IMAGE" }):
-            return capturePhoto()
+            return self.capturePhoto()
 
     def closeCamera(self):
        self.camera._check_camera_open()
