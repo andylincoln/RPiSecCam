@@ -78,6 +78,9 @@ class GSMModem:
         response = self.sendCommand(GSMModem.AT + GSMModem.NEWLINE)
         if (response != GSMModem.OK):
             raise Exception("Failed to establish connection to GSM Modem {x}".format(x=self.serialPort))
+        self.sendCommand(GSMModem.AT + "CMGF=1" + GSMModem.NEWLINE)
+        self.sendCommand(GSMModem.AT + "CMGF=?" + GSMModem.NEWLINE)
+        self.sendCommand(GSMModem.AT+GSMModem.NEWLINE)
 
     def getCBC(self):
         return self.sendCommand(GSMModem.AT+GSMModem.CBC+GSMModem.NEWLINE)
@@ -224,10 +227,23 @@ class GSMModem:
 class Message:
 
     def __init__(self, tup):
-        self.status      = tup[0]
-        self.phoneNumber = tup[1]
-        self.timestamp   = tup[3]
-        self.content     = tup[4]
+        self.status      = tup[0][12:16]
+        self.phoneNumber = tup[0][19:31]
+        self.timestamp   = tup[0][40:57]
+        self.content     = tup[1]
+
+    def status(self):
+        return self.status
+
+    def phoneNumber(self):
+        return self.phoneNumber
+
+    def timestamp(self):
+        return self.timestamp
+
+    def content(self):
+        return self.content
+
 
 class NotificationController(pykka.ThreadingActor):
 
@@ -237,13 +253,12 @@ class NotificationController(pykka.ThreadingActor):
     def __init__(self):
         super(NotificationController, self).__init__()
 
-    def notify(message, attachment=None, phone=False, email=True):
+    def notify(message, numbers, addresses, attachment=None, phone=False, email=True):
 
         if (Not(phone or email)):
            raise Exception("You must use at least one notification system!")
 
         if (email):
             emailClient.sendEmail("andrewlincoln11@gmail.com", "Testing Notification Controller Class", "This is a test")
-        if (phone):
-           print "TODO"
-           #gsm.sendSMS()
+        #if (phone):
+        #   gsm.sendSMS()
