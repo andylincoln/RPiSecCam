@@ -1,28 +1,26 @@
 INFO:root:RPiSecCam by Andy Lincoln
 DEBUG:root:Booting controllers
-DEBUG:pykka:Registered NotificationController (urn:uuid:6dc15824-76e1-4ab9-b403-0cc9b2fe3007)
-DEBUG:pykka:Starting NotificationController (urn:uuid:6dc15824-76e1-4ab9-b403-0cc9b2fe3007)
-DEBUG:pykka:Registered LightController (urn:uuid:f56a0658-dc58-41d3-a22b-e88b9f19df0c)
-DEBUG:pykka:Starting LightController (urn:uuid:f56a0658-dc58-41d3-a22b-e88b9f19df0c)
-DEBUG:pykka:Registered MotionController (urn:uuid:841e3814-f539-4d65-9514-4b038e460c5b)
-DEBUG:pykka:Starting MotionController (urn:uuid:841e3814-f539-4d65-9514-4b038e460c5b)
+DEBUG:pykka:Registered NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
+DEBUG:pykka:Starting NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
+DEBUG:pykka:Registered LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
+DEBUG:pykka:Starting LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
+DEBUG:pykka:Registered MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
+DEBUG:pykka:Starting MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-27 15:31:36.001181.jpg
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-27 15:32:04.251608.jpg
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Found nothing, going to sleep
-DEBUG:root:Checking if armed
-DEBUG:root:Armed, waiting for motion
-DEBUG:root:Found nothing, going to sleep
-DEBUG:root:Checking if armed
-DEBUG:root:Not Armed
-DEBUG:pykka:Unregistered LightController (urn:uuid:f56a0658-dc58-41d3-a22b-e88b9f19df0c)
-DEBUG:pykka:Stopped LightController (urn:uuid:f56a0658-dc58-41d3-a22b-e88b9f19df0c)
-DEBUG:pykka:Unregistered MotionController (urn:uuid:841e3814-f539-4d65-9514-4b038e460c5b)
-DEBUG:pykka:Stopped MotionController (urn:uuid:841e3814-f539-4d65-9514-4b038e460c5b)
-DEBUG:pykka:Unregistered NotificationController (urn:uuid:6dc15824-76e1-4ab9-b403-0cc9b2fe3007)
-DEBUG:pykka:Stopped NotificationController (urn:uuid:6dc15824-76e1-4ab9-b403-0cc9b2fe3007)
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/2015-11-27 15:32:32.502022.jpg
+DEBUG:pykka:Unregistered LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
+DEBUG:pykka:Stopped LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
+DEBUG:pykka:Unregistered MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
+DEBUG:pykka:Stopped MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
+DEBUG:pykka:Unregistered NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
+DEBUG:pykka:Stopped NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)

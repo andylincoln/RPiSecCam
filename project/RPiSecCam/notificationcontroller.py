@@ -129,7 +129,7 @@ class GSMModem:
         messagePosition = [3, 4]
         response = itemgetter(*messagePosition)(serialConnection.readlines())
         serialConnection.close()
-        return response
+        return Message(response)
 
     def getAllMessagesByStatus(self, messageStatus):
         serialConnection = serial.Serial(self.serialPort, baudrate=9600, timeout=8)
@@ -262,3 +262,17 @@ class NotificationController(pykka.ThreadingActor):
             emailClient.sendEmail("andrewlincoln11@gmail.com", "Testing Notification Controller Class", "This is a test")
         #if (phone):
         #   gsm.sendSMS()
+    def on_receive(self, message):
+        if (message == { 'msg': "STATUS"}):
+            return self.status()
+
+    def status(self):
+
+        message = self.gsm.getLastMessage()
+
+        if ("DISARMED" in message.content):
+            return False
+        elif ("ARMED" in message.content):
+            return True
+        else:
+            return None
