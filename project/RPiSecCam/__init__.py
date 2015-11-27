@@ -18,12 +18,12 @@ logging.info("RPiSecCam by Andy Lincoln")
 
 """Entry point for the application script"""
 ARMED = False
-MSG_ARM     = {'msg' : "ARM"}
-MSG_DISARM  = {'msg' : "DISARM"}
+MSG_STATUS  = {'msg' : "STATUS"}
 MSG_ERROR   = {'msg' : "ERROR"}
 MSG_NORMAL  = {'msg' : "NORMAL"}
 MSG_IS_MOTION_DETECTED = { 'msg' : "IS MOTION DETECTED?"}
 MSG_CAPTURE_PHOTO = { 'msg' : "CAPTURE PHOTO"}
+MSG_LAST_MESSAGE = { 'msg' : "LAST MESSAGE" }
 
 logging.debug("Booting controllers")
 notif_ref = notificationcontroller.NotificationController.start()
@@ -43,13 +43,8 @@ light_ref.tell(MSG_NORMAL)
 counter = 0
 while(True):
     try:
-        counter = counter + 1
-        if counter < 5 :
-            ARMED = True
-        else:
-            ARMED = False
         #Check for text message saying ARM if so, set ARMED to True
-
+        ARMED = notif_ref.ask(MSG_STATUS)
 
         # If system is armed, check for motion, if motion detected, take picture
         logging.debug("Checking if armed")
