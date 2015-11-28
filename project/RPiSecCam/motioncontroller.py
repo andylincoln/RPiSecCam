@@ -8,6 +8,7 @@ import logging
 import time
 import pykka
 from datetime import datetime
+from datetime import date
 
 class MotionController(pykka.ThreadingActor):
 
@@ -43,6 +44,6 @@ class MotionController(pykka.ThreadingActor):
         return GPIO.input(self.motion_pin)
 
     def capturePhoto(self):
-        filename =  '../photos/' + str(datetime.now()) + '.jpg'
+        filename =  '../photos/' + (datetime.now().strftime("%m-%d-%y-%I%M%S")) + '.jpg'
         self.camera.capture(filename)
         return filename
