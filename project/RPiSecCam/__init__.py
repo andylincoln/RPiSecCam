@@ -8,19 +8,19 @@ import lightcontroller
 import motioncontroller
 import logging
 import RPi.GPIO as GPIO
+import MySQLdb
 
 logging.basicConfig(filename='../log/RPiSecCam.log',
                     filemode='w',
                     level=logging.DEBUG, datefmt='%m-%d %h:%M')
+
 logging.info("RPiSecCam by Andy Lincoln")
-
-
 
 """Entry point for the application script"""
 ARMED = False
 MSG_STATUS  = {'msg' : "STATUS"}
-MSG_ERROR   = {'msg' : "ERROR"}
-MSG_NORMAL  = {'msg' : "NORMAL"}
+MSG_DISARMED   = {'msg' : "DISARMED"}
+MSG_ARMED  = {'msg' : "ARMED"}
 MSG_IS_MOTION_DETECTED = { 'msg' : "IS MOTION DETECTED?"}
 MSG_CAPTURE_PHOTO = { 'msg' : "CAPTURE PHOTO"}
 MSG_LAST_MESSAGE = { 'msg' : "LAST MESSAGE" }
@@ -38,29 +38,63 @@ motion_proxy = motion_ref.proxy()
 
 PROXIES=[notif_proxy, light_proxy, motion_proxy]
 
+# Database connection
+
+db = MySQLdb.connect("localhost", "rpiseccam", "password", "iotdevdb")
+curs = db.cursor()
+
 # Start the program with everything normal
-light_ref.tell(MSG_NORMAL)
-counter = 0
+light_ref.tell(MSG_DISARMED)
+
 while(True):
     try:
+        #Get the most up-to-date list of phone numbers and addresses
+
+        addresses=[]
+        phone_numbers=[]
+        logging.debug("Opening the database")
+        with db:
+
+            curs.execute("""SELECT phone_number, email FROM login WHERE phone_number IS NOT NULL AND email IS NOT NULL;""")
+            logging.debug("Getting the numbers and addresses")
+            for reading in curs.fetchall():
+                phone_numbers.append(str(reading[0]))
+                addresses.append(str(reading[1]))
+                logging.info("Phone Number: {p} , Email: {e}".format(p=str(reading[0]), e=str(reading[1])))
+
+
+
         #Check for text message saying ARM if so, set ARMED to True
         ARMED = notif_ref.ask(MSG_STATUS)
 
         # If system is armed, check for motion, if motion detected, take picture
         logging.debug("Checking if armed")
+
         if (ARMED):
+
             logging.debug("Armed, waiting for motion")
+            light_ref.tell(MSG_ARMED)
+
+            logging.debug("ARMED, setting light to green")
             motionDetected = motion_ref.ask(MSG_IS_MOTION_DETECTED, block=True)
+
             if (motionDetected):
                 logging.debug("Motion detected, taking photo!")
+
                 photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True)
                 logging.debug("Photo taken! Filename is {filename}".format(filename=photoFilename))
+
+                #logging.debug("")
+                #notif_proxy.(MSG_NOTIFY)
+
             else:
+
                 logging.debug("Found nothing, going to sleep")
-                time.sleep(30)
+                time.sleep(5)
         else:
-            logging.debug("Not Armed")
-            time.sleep(30)
+            light_ref.tell(MSG_DISARMED)
+            logging.debug("DISARMED, setting light to red")
+            time.sleep(5)
 
     except KeyboardInterrupt:
         for actor in ACTOR_REFS:

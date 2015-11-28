@@ -18,13 +18,13 @@ class LightController(pykka.ThreadingActor):
     def off(self,light):
         GPIO.output(light, False)
 
-    def normal(self):
+    def armed(self):
         self.off(RED_LIGHT)
         self.on(GREEN_LIGHT)
 
-    def error(self):
-        self.off(self.GREEN_LIGHT)
-        self.on(self.RED_LIGHT)
+    def disarmed(self):
+        self.off(GREEN_LIGHT)
+        self.on(RED_LIGHT)
 
     def __init__(self):
         super(LightController, self).__init__()
@@ -45,16 +45,7 @@ class LightController(pykka.ThreadingActor):
             self.off(light)
 
     def on_receive(self, message):
-        if (message == { 'msg' : "NORMAL"}):
-            self.normal()
-        elif (message == { 'msg' : "ERROR"}):
-            self.error()
-
-
-
-
-
-
-
-
-
+        if (message == { 'msg' : "ARMED"}):
+            self.armed()
+        elif (message == { 'msg' : "DISARMED"}):
+            self.disarmed()

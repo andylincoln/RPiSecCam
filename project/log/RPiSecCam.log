@@ -1,26 +1,46 @@
 INFO:root:RPiSecCam by Andy Lincoln
 DEBUG:root:Booting controllers
-DEBUG:pykka:Registered NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
-DEBUG:pykka:Starting NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
-DEBUG:pykka:Registered LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
-DEBUG:pykka:Starting LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
-DEBUG:pykka:Registered MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
-DEBUG:pykka:Starting MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
+DEBUG:pykka:Registered NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
+DEBUG:pykka:Starting NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
+DEBUG:pykka:Registered LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
+DEBUG:pykka:Starting LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
+DEBUG:pykka:Registered MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
+DEBUG:pykka:Starting MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Motion detected, taking photo!
-DEBUG:root:Photo taken! Filename is ../photos/2015-11-27 15:31:36.001181.jpg
+DEBUG:root:ARMED, setting light to green
+DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Motion detected, taking photo!
-DEBUG:root:Photo taken! Filename is ../photos/2015-11-27 15:32:04.251608.jpg
+DEBUG:root:ARMED, setting light to green
+DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
 DEBUG:root:Checking if armed
 DEBUG:root:Armed, waiting for motion
-DEBUG:root:Motion detected, taking photo!
-DEBUG:root:Photo taken! Filename is ../photos/2015-11-27 15:32:32.502022.jpg
-DEBUG:pykka:Unregistered LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
-DEBUG:pykka:Stopped LightController (urn:uuid:7746127f-1df4-4b4c-aafb-9c8ab480150f)
-DEBUG:pykka:Unregistered MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
-DEBUG:pykka:Stopped MotionController (urn:uuid:0bd0aff3-434f-4994-a9fb-e18b24b40979)
-DEBUG:pykka:Unregistered NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
-DEBUG:pykka:Stopped NotificationController (urn:uuid:1d13d597-2cac-45a5-886f-9dc58c1c9399)
+DEBUG:root:ARMED, setting light to green
+DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
+DEBUG:root:Checking if armed
+DEBUG:root:Armed, waiting for motion
+DEBUG:root:ARMED, setting light to green
+DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
+DEBUG:root:Checking if armed
+DEBUG:root:Armed, waiting for motion
+DEBUG:root:ARMED, setting light to green
+DEBUG:root:Found nothing, going to sleep
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
+DEBUG:pykka:Unregistered LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
+DEBUG:pykka:Stopped LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
+DEBUG:pykka:Unregistered MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
+DEBUG:pykka:Stopped MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
+DEBUG:pykka:Unregistered NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
+DEBUG:pykka:Stopped NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)

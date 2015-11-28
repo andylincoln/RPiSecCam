@@ -19,8 +19,8 @@
                         <input type="text"  class="form-control" name="username"  value="" maxlength="20" placeholder="username">
                         <input type="email" class="form-control" name="email"  value="" maxlength="40" placeholder="email">
                         <input type="password" class="form-control" name="password"  value="" maxlength="16" placeholder="password">
-                        <input type="password" class="form-control" name="confirm password" value="" maxlength="16" placeholder="confirm password">
-                        <input type="tel" class="form-control" name="phone number" value="" maxlength="12" placeholder="+18005554455"/>
+                        <input type="password" class="form-control" name="confirm_password" value="" maxlength="16" placeholder="confirm password">
+                        <input type="tel" class="form-control" name="phone_number" value="" maxlength="12" placeholder="18005554455"/>
                         <input class="btn btn-primary" type="Submit" name = "Submit1"  value = "Login"/>
                     </div>
                 </form>
