@@ -22,9 +22,9 @@ function quote_smart($value, $handle) {
 
     $uname = $_POST['username'];
 	$pword = $_POST['password'];
-    $confirmpword = $_POST['confirm password'];
+    $confirmpword = $_POST['confirm_password'];
     $email = $_POST['email'];
-    $tel = $_POST['phone number'];
+    $tel = $_POST['phone_number'];
 
     $sign_up_check = isset($uname) && isset($pword) && isset($confirmpword) && isset($email) && isset($tel) && (
     md5($pword) == md5($confirmpword));
@@ -49,25 +49,27 @@ function quote_smart($value, $handle) {
 
 //        print "DB Read Operation";
         if ($db_found) {
-            echo "$uname:$pword:";
+            #echo "$uname:$pword:";
             $epw = md5($pword);
 
             $uname = quote_smart($uname, $db_handle);
             $pword = quote_smart($pword, $db_handle);
-
-            echo ":$uname:$pword:";
+            $email = quote_smart($email, $db_handle);
+            $tel   = quote_smart($tel, $db_handle);
 
             $SQL = "SELECT * FROM login WHERE (L1 = $uname AND L2 = '$epw')";
-/            $SQL = "SELECT * FROM login WHERE L2 = '$epw'";
+//            $SQL = "SELECT * FROM login WHERE L2 = '$epw'";
 //            $SQL = "SELECT * FROM login WHERE L1 = $uname";
-            echo "$SQL";
+            #echo "$SQL";
 
 
             if ($sign_up_check) {
-               $SQL = "INSERT INTO login (L1, L2, email, phone_number) VALUES ($uname,$pword,$email,$tel)";
+               $SQL = "INSERT INTO login (L1, L2, email, phone_number, role) VALUES ($uname,$pword,$email,$tel, 'u');";
                $result = mysql_query($SQL);
                $num_rows = mysql_num_rows($result);
-               echo "SIGNING UP";
+               echo "<p>SIGNING UP</p>";
+               echo "<p>Result:" . var_dump($result) . "</p>";
+               echo "<p>num_rows:" . var_dump($num_rows) . "</p>";
             } else {
                 $result = mysql_query($SQL);
                 $num_rows = mysql_num_rows($result);
@@ -75,8 +77,8 @@ function quote_smart($value, $handle) {
     	    //====================================================
     	    //	CHECK TO SEE IF THE $result VARIABLE IS TRUE
     	    //====================================================
-            echo "- $num_rows -";
-		    if ($num_rows) {
+            // echo "- $num_rows -";
+		    if ($result) {
 	 	        session_start();
 		        $_SESSION['login'] = "1";
 		        header ("Location: page1.php");
