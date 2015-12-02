@@ -1,6 +1,0 @@
-email:
-    host: "smtp.gmail.com"
-    port : 587
-    address: "andrewlincoln11@gmail.com"
-    password: "luhtxohfwnmvtjfz"
-    local_hostname: "localhost"
