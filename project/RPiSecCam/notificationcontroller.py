@@ -257,11 +257,13 @@ class NotificationController(pykka.ThreadingActor):
 
         if (Not(phone or email)):
            raise Exception("You must use at least one notification system!")
-
         if (email):
-            emailClient.sendEmail("andrewlincoln11@gmail.com", "Testing Notification Controller Class", "This is a test")
-        #if (phone):
-        #   gsm.sendSMS()
+            for email in addresses:
+                emailClient.sendEmail(email, "Activity Detected", "Activity has been detected, photo is attached",
+                attachment)
+        if (phone):
+            for number in numbers:
+                gsm.sendSMS()
     def on_receive(self, message):
         if (message == { 'msg': "STATUS"}):
             return self.status()
