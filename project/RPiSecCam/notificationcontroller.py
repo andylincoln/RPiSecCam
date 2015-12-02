@@ -15,7 +15,8 @@ import re
 from operator import itemgetter
 from types import *
 from curses import ascii
-
+from email.mime.application import MIMEApplication
+from os.path import basename
 
 # EmailClient class for sending emails over SMTP using the details given in config.yaml
 class EmailClient:
@@ -35,16 +36,24 @@ class EmailClient:
         self.smtp.starttls()
         self.smtp.login(self.fromAddr,self.password)
 
-    def sendEmail(self, toAddr, subject, message, attachments=[]):
+    def sendEmail(self, toAddr, subject, message, attachment):
         msg = email.mime.Multipart.MIMEMultipart()
         msg['Subject'] = subject
         msg['From'] = self.fromAddr
         msg['To'] = toAddr
-        # TODO add attachements
+
+        with open(attachment, "rb") as fil:
+            msg.attach(MIMEApplication(fil.read(),Content_Disposition='attachment; filename="%s"' % basename(attachment),
+                Name=basename(attachment)
+                ))
+
         body = email.mime.Text.MIMEText(message)
         msg.attach(body)
 
         self.smtp.sendmail(self.fromAddr, toAddr, msg.as_string())
+
+    def __del__(self):
+        self.smtp.close()
 
 # GSMModem class enables use of the serial connection to the GSM Modem
 class GSMModem:
@@ -78,8 +87,8 @@ class GSMModem:
         response = self.sendCommand(GSMModem.AT + GSMModem.NEWLINE)
         if (response != GSMModem.OK):
             raise Exception("Failed to establish connection to GSM Modem {x}".format(x=self.serialPort))
-        self.sendCommand(GSMModem.AT + "CMGF=1" + GSMModem.NEWLINE)
         self.sendCommand(GSMModem.AT + "CMGF=?" + GSMModem.NEWLINE)
+        self.sendCommand(GSMModem.AT + "CMGF=1" + GSMModem.NEWLINE)
         self.sendCommand(GSMModem.AT+GSMModem.NEWLINE)
 
     def getCBC(self):
@@ -253,17 +262,18 @@ class NotificationController(pykka.ThreadingActor):
     def __init__(self):
         super(NotificationController, self).__init__()
 
-    def notify(message, numbers, addresses, attachment=None, phone=False, email=True):
+    def notify(self, numbers, addresses, attachment, phone, email):
 
-        if (Not(phone or email)):
+        if (not(phone or email)):
            raise Exception("You must use at least one notification system!")
         if (email):
             for email in addresses:
-                emailClient.sendEmail(email, "Activity Detected", "Activity has been detected, photo is attached",
+                self.emailClient.sendEmail(email, "Activity Detected", "Activity has been detected, photo is attached",
                 attachment)
         if (phone):
             for number in numbers:
-                gsm.sendSMS()
+                self.gsm.sendSMS("+"+number, "Activity has been detected!")
+
     def on_receive(self, message):
         if (message == { 'msg': "STATUS"}):
             return self.status()

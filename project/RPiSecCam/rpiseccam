@@ -1,4 +1,4 @@
-#
+#! /usr/bin/env python
 # Andy Lincoln
 #
 
@@ -62,8 +62,6 @@ while(True):
                 addresses.append(str(reading[1]))
                 logging.info("Phone Number: {p} , Email: {e}".format(p=str(reading[0]), e=str(reading[1])))
 
-
-
         #Check for text message saying ARM if so, set ARMED to True
         ARMED = notif_ref.ask(MSG_STATUS)
 
@@ -72,7 +70,6 @@ while(True):
 
         if (ARMED):
 
-            logging.debug("Armed, waiting for motion")
             light_ref.tell(MSG_ARMED)
 
             logging.debug("ARMED, setting light to green")
@@ -84,8 +81,9 @@ while(True):
                 photoFilename = motion_ref.ask(MSG_CAPTURE_PHOTO, block=True)
                 logging.debug("Photo taken! Filename is {filename}".format(filename=photoFilename))
 
-                #logging.debug("")
-                #notif_proxy.(MSG_NOTIFY)
+                logging.debug("Notifying of activity")
+
+                notif_proxy.notify(phone_numbers, addresses, photoFilename, True, True)
 
             else:
 

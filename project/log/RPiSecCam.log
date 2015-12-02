@@ -1,46 +1,50 @@
 INFO:root:RPiSecCam by Andy Lincoln
 DEBUG:root:Booting controllers
-DEBUG:pykka:Registered NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
-DEBUG:pykka:Starting NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
-DEBUG:pykka:Registered LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
-DEBUG:pykka:Starting LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
-DEBUG:pykka:Registered MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
-DEBUG:pykka:Starting MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
+DEBUG:pykka:Registered NotificationController (urn:uuid:67ef1cb8-996e-4d73-a240-e5354ec27f7a)
+DEBUG:pykka:Starting NotificationController (urn:uuid:67ef1cb8-996e-4d73-a240-e5354ec27f7a)
+DEBUG:pykka:Registered LightController (urn:uuid:007efce1-f51f-4432-ae01-89cfe08f8a20)
+DEBUG:pykka:Starting LightController (urn:uuid:007efce1-f51f-4432-ae01-89cfe08f8a20)
+DEBUG:pykka:Registered MotionController (urn:uuid:29ab54c6-9303-4f14-a142-26fb8a1562c0)
+DEBUG:pykka:Starting MotionController (urn:uuid:29ab54c6-9303-4f14-a142-26fb8a1562c0)
 DEBUG:root:Opening the database
 DEBUG:root:Getting the numbers and addresses
+INFO:root:Phone Number: 19783190545 , Email: andrewlincoln11@gmail.com
 DEBUG:root:Checking if armed
-DEBUG:root:Armed, waiting for motion
+DEBUG:root:ARMED, setting light to green
+DEBUG:root:Motion detected, taking photo!
+DEBUG:root:Photo taken! Filename is ../photos/12-02-15-034049.jpg
+DEBUG:root:Notifying of activity
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
+INFO:root:Phone Number: 19783190545 , Email: andrewlincoln11@gmail.com
+DEBUG:root:Checking if armed
 DEBUG:root:ARMED, setting light to green
 DEBUG:root:Found nothing, going to sleep
 DEBUG:root:Opening the database
 DEBUG:root:Getting the numbers and addresses
+INFO:root:Phone Number: 19783190545 , Email: andrewlincoln11@gmail.com
 DEBUG:root:Checking if armed
-DEBUG:root:Armed, waiting for motion
+DEBUG:root:DISARMED, setting light to red
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
+INFO:root:Phone Number: 19783190545 , Email: andrewlincoln11@gmail.com
+DEBUG:root:Checking if armed
+DEBUG:root:DISARMED, setting light to red
+DEBUG:root:Opening the database
+DEBUG:root:Getting the numbers and addresses
+INFO:root:Phone Number: 19783190545 , Email: andrewlincoln11@gmail.com
+DEBUG:root:Checking if armed
 DEBUG:root:ARMED, setting light to green
 DEBUG:root:Found nothing, going to sleep
 DEBUG:root:Opening the database
 DEBUG:root:Getting the numbers and addresses
+INFO:root:Phone Number: 19783190545 , Email: andrewlincoln11@gmail.com
 DEBUG:root:Checking if armed
-DEBUG:root:Armed, waiting for motion
 DEBUG:root:ARMED, setting light to green
 DEBUG:root:Found nothing, going to sleep
-DEBUG:root:Opening the database
-DEBUG:root:Getting the numbers and addresses
-DEBUG:root:Checking if armed
-DEBUG:root:Armed, waiting for motion
-DEBUG:root:ARMED, setting light to green
-DEBUG:root:Found nothing, going to sleep
-DEBUG:root:Opening the database
-DEBUG:root:Getting the numbers and addresses
-DEBUG:root:Checking if armed
-DEBUG:root:Armed, waiting for motion
-DEBUG:root:ARMED, setting light to green
-DEBUG:root:Found nothing, going to sleep
-DEBUG:root:Opening the database
-DEBUG:root:Getting the numbers and addresses
-DEBUG:pykka:Unregistered LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
-DEBUG:pykka:Stopped LightController (urn:uuid:50fe8da5-1eb3-4bc5-9f76-17c5b97879f5)
-DEBUG:pykka:Unregistered MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
-DEBUG:pykka:Stopped MotionController (urn:uuid:c81feaf1-1327-41fc-9bbf-25bd516d4bdf)
-DEBUG:pykka:Unregistered NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
-DEBUG:pykka:Stopped NotificationController (urn:uuid:ae93bf89-278f-4d86-9642-b84c6b05d1b5)
+DEBUG:pykka:Unregistered LightController (urn:uuid:007efce1-f51f-4432-ae01-89cfe08f8a20)
+DEBUG:pykka:Stopped LightController (urn:uuid:007efce1-f51f-4432-ae01-89cfe08f8a20)
+DEBUG:pykka:Unregistered MotionController (urn:uuid:29ab54c6-9303-4f14-a142-26fb8a1562c0)
+DEBUG:pykka:Stopped MotionController (urn:uuid:29ab54c6-9303-4f14-a142-26fb8a1562c0)
+DEBUG:pykka:Unregistered NotificationController (urn:uuid:67ef1cb8-996e-4d73-a240-e5354ec27f7a)
+DEBUG:pykka:Stopped NotificationController (urn:uuid:67ef1cb8-996e-4d73-a240-e5354ec27f7a)

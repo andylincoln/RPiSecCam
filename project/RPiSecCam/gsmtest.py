@@ -10,15 +10,9 @@ print "Get message count"
 print gsm.getAllMessageCount()
 
 print "Get last message"
-lastMessageRaw = gsm.getLastMessage()
 
-print lastMessageRaw
-print "Length: " + str(len(lastMessageRaw))
+message = gsm.getLastMessage()
 
-for string in lastMessageRaw:
-    print string
-
-message = Message(lastMessageRaw)
 print message.status
 print message.content
 print message.phoneNumber
